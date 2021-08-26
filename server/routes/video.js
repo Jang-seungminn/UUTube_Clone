@@ -3,8 +3,8 @@ const router = express.Router();
 // const { Video } = require("../models/Video");
 
 const {auth} = require("../middleware/auth");
-const multer = require("multer")
-var ffmpeg = require('fluent-ffmpeg')
+const multer = require("multer");
+var ffmpeg = require('fluent-ffmpeg');
 
 // STORAGE MULTER CONFIG
 let storage = multer.diskStorage({
@@ -57,17 +57,17 @@ router.post('/thumbnail', ((req, res) => {
         console.log('Will generate ' + filenames.join(', '))
         console.log(filenames)
 
-        filePath = "uploads/thumbnails" + filenames[0]
+        filePath = "uploads/thumbnails/" + filenames[0]
     })
         .on('end', function () {
             console.log('Screenshots taken');
-            return res.json({success: true, url: filePath, fileName: filenames, fileDuration: fileDuration})
+            return res.json({success: true, url: filePath, fileDuration: fileDuration})
         })
         .on('error', function (err) {
             console.log(err)
             return res.json({success: false, err})
         })
-        .screenshots({count: 3, folder: 'uploads/thumbnails', size: '320X240', filename: 'thumbnails-%b.png'})
+        .screenshots({count: 3, folder: 'uploads/thumbnails', size: '320x240', filename: 'thumbnails-%b.png'})
 
 }))
 
