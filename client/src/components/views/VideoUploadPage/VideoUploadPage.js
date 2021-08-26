@@ -49,36 +49,54 @@ function VideoUploadPage() {
     const [Category,
         setCategory] = useState(0)
 
-    const onTitleChange =(e)=> {
+    const onTitleChange = (e) => {
         setVideoTitle(e.currentTarget.value)
     }
 
-    const onDescriptionChange=(e)=>{
+    const onDescriptionChange = (e) => {
         setDiscription(e.currentTarget.value)
     }
 
-    const onPrivateChange=(e)=>{
+    const onPrivateChange = (e) => {
         setPrivate(e.currentTarget.value)
     }
-    const onCategoryChange=(e)=>{
+    const onCategoryChange = (e) => {
         setCategory(e.currentTarget.value)
     }
 
-    const onDrop=(files)=>{
+    const onDrop = (files) => {
         let formData = new FormData;
-        const config ={
-            header:{'content-type':'multipart/form-data'}
-        }
-        formData.append("file",files[0])
-        
-        Axios.post('/api/video/uploadfiles',formData,config)
-        .then(response=>{
-            if(response.data.success){
-                console.log(response.data)
-            }else{
-                alert('비디오 업로드를 실패했습니다.')
+        const config = {
+            header: {
+                'content-type': 'multipart/form-data'
             }
-        })
+        }
+        formData.append("file", files[0])
+
+        Axios
+            .post('/api/video/uploadfiles', formData, config)
+            .then(response => {
+                if (response.data.success) {
+                    console.log(response.data)
+
+                    let variable = {
+                        url: response.data.url,
+                        filename: response.data.filename
+                    }
+                    Axios
+                        .post('/api/video/thumbnail', variable)
+                        .then(response => {
+                            if (response.data.success) {
+                                console.log(response.data)
+                            } else {
+                                alert('썸네일 생성에 실패했습니다.')
+                            }
+                        })
+
+                } else {
+                    alert('비디오 업로드를 실패했습니다.')
+                }
+            })
     }
     return (
         <div
@@ -101,8 +119,7 @@ function VideoUploadPage() {
                 }}>
                     {/* < Drop Zone > */}
                     {/* Multer로 노드 서버에 비디오 저장 */}
-                    <Dropzone onDrop={onDrop} multiple={false}
-                    maxSize={1000000000}>
+                    <Dropzone onDrop={onDrop} multiple={false} maxSize={1000000000}>
                         {({getRootProps, getInputProps}) => (
                             <div
                                 style={{
@@ -139,7 +156,7 @@ function VideoUploadPage() {
 
                 <br/>
                 <br/>
-                <select onChange = {onPrivateChange}>
+                <select onChange={onPrivateChange}>
                     {PrivateOptions.map((item, index) => (
                         <option key={index} value={item.value}>{item.label}</option>
                     ))}
