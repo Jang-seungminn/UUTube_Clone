@@ -1,4 +1,4 @@
-import React, {useEffect,useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {
     Card,
     Icon,
@@ -37,10 +37,11 @@ function LandingPage() {
         var seconds = Math.floor(video.duration - minutes * 60);
 
         return <Col lg={6} md={8} xs={24}>
-            <a href={`/video/post/${video._id}`}>
-                <div style={{
-                    position: 'relative'
-                }}>
+
+            <div style={{
+                position: 'relative'
+            }}>
+                <a href={`/video/${video._id}`}>
                     <img
                         style={{
                         width: '100%'
@@ -51,8 +52,8 @@ function LandingPage() {
                         <span>{minutes}
                             : {seconds}</span>
                     </div>
-                </div>
-            </a>
+                </a>
+            </div>
             <br/>
             <Meta
                 avatar={< Avatar src = {
