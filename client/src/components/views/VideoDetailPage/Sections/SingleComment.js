@@ -15,7 +15,7 @@ function SingleComment(props) {
         setOpenReply(!OpenReply)
     }
     const onHandleChange =(e)=>{
-        setCommentValue(e.currentTarget.CommentValue)
+        setCommentValue(e.currentTarget.value)
     }
     const onSubmit=(e)=>{
         e.preventDefault()
@@ -30,10 +30,10 @@ function SingleComment(props) {
             .post('/api/comment/saveComment', variables)
             .then(response => {
                 if (response.data.success) {
-                    console.log(response.data)
+                    console.log(response.data.result)
                     props.refreshFunction(response.data.result)
                     setCommentValue("")
-
+                    setOpenReply(false)
                 } else {
                     alert('커멘트를 저장하지 못했습니다.')
                 }
